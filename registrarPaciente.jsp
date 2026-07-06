@@ -2,7 +2,9 @@
 <%@ page import="java.sql.*,java.util.*" %>
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
+<%-- Alta unificada de pacientes; los campos específicos se guardan en la tabla de cada tipo. --%>
 <%!
+    // Los nombres de tablas recibidos aquí son constantes del servidor, nunca valores del formulario.
     private static void insertarTelefono(Connection cn, String tabla, String fk, String tablaTipo,
             int idPersona, String tipo, String telefono) throws SQLException {
         if (telefono == null || telefono.trim().isEmpty()) return;
@@ -80,6 +82,7 @@
                 }
 
                 if (error == null) {
+                    // La persona y sus teléfonos forman una sola operación lógica.
                     cn.setAutoCommit(false);
                     try {
                         int idGenerado;

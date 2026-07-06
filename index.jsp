@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%-- Portada pública: no consulta datos clínicos ni requiere una sesión autenticada. --%>
 <!DOCTYPE html>
 <html lang="es">
 <head>

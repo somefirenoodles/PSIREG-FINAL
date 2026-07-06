@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%-- Pie de página institucional compartido. --%>
+<%-- Pie compartido; mantiene visible el cierre para terminar la sesión desde cualquier página. --%>
 <footer class="site-footer">
     <div class="site-footer__inner">
         <nav aria-label="Menú secundario">

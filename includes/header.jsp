@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%-- Banner institucional compartido; se inserta dentro del body de cada página. --%>
+<%-- Banner compartido; los destinos externos usan noopener para no entregar control de esta pestaña. --%>
 <header class="site-header">
     <div class="site-header__inner">
         <a class="brand" href="index.jsp" aria-label="PSIREG, ir al inicio">

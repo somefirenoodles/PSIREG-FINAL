@@ -2,7 +2,9 @@
 <%@ page import="java.sql.*,java.util.*" %>
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
+<%-- Agenda una cita para el perfil profesional asociado al usuario autenticado. --%>
 <%!
+    // MariaDB espera segundos; el control HTML time normalmente envía solo HH:mm.
     private static String horaSql(String hora) {
         if (hora == null) return "";
         hora = hora.trim();

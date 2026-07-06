@@ -5,6 +5,7 @@
     String rolSesion = (String) session.getAttribute("rol");
     String nombreSesion = (String) session.getAttribute("nombre");
     String apellidoSesion = (String) session.getAttribute("apellido");
+    // El nombre se construye desde la sesión y se escapa justo antes de imprimirlo.
     String nombreVisible = "";
     if (nombreSesion != null) {
         nombreVisible = nombreSesion;

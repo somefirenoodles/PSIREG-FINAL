@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*,java.util.*" %>
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
+<%-- Crea el perfil institucional y lo vincula con una cuenta de rol PSICOLOGO. --%>
 <%
     request.setAttribute("rolPermitido", "ADMIN");
 %>
@@ -15,6 +16,7 @@
     List<String[]> cargos = new ArrayList<String[]>();
 
     if (esPost(request)) {
+        // La cuenta y el perfil son entidades distintas: aquí se validan antes de enlazarlas.
         idUsuario = p(request, "idUsuario");
         primerNombre = p(request, "primerNombre");
         segundoNombre = p(request, "segundoNombre");

@@ -1,4 +1,5 @@
 /* Sistema visual institucional de PSIREG, adaptado a la paleta sunset de Mistral. */
+/* Los componentes consumen estos tokens para que contraste, espaciado y radios cambien desde un solo lugar. */
 :root {
     --color-primary: #cc3a05;
     --color-primary-deep: #8f2600;

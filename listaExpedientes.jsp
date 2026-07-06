@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*,java.util.*" %>
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
+<%-- Expedientes visibles para el psicólogo autenticado, derivados de sus citas registradas. --%>
 <%
     request.setAttribute("rolPermitido", "PSICOLOGO");
 %>
@@ -12,6 +13,7 @@
     List<Map<String, String>> expedientes = new ArrayList<Map<String, String>>();
 
     try (Connection cn = obtenerConexion()) {
+        // El id profesional se resuelve desde el usuario de sesión para impedir suplantación por URL.
         try (PreparedStatement ps = cn.prepareStatement("SELECT id_psicologo FROM psicologo WHERE id_usuario = ? AND estado = 'ACTIVO'")) {
             ps.setInt(1, ((Number) session.getAttribute("id_usuario")).intValue());
             try (ResultSet rs = ps.executeQuery()) {

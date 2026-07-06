@@ -3,6 +3,7 @@
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
 <%@ include file="includes/seguridadPassword.jsp" %>
+<%-- Autentica cuentas activas y crea una sesión mínima; el perfil profesional se consulta por separado. --%>
 <%
     String mensajeError = null;
     String credencial = p(request, "credencial");
@@ -33,6 +34,7 @@
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next() && verificarPassword(password, rs.getString("password_hash"))) {
+                        // Evita conservar datos de una sesión anónima o autenticada anteriormente.
                         session.invalidate();
 
                         javax.servlet.http.HttpSession nuevaSesion = request.getSession(true);

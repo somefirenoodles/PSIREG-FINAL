@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*,java.util.*" %>
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
+<%-- Panel administrativo de citas con filtros opcionales parametrizados. --%>
 <%
     request.setAttribute("rolPermitido", "ADMIN");
 %>
@@ -15,6 +16,7 @@
     List<String[]> psicologos = new ArrayList<String[]>();
 
     try (Connection cn = obtenerConexion()) {
+        // Los filtros nulos permiten conservar una sola consulta preparada para todas las combinaciones.
         String sql = "SELECT id_cita, fecha, hora, nombre_servicio, id_psicologo, psicologo, "
                    + "id_paciente, tipo_paciente, nombre_completo AS paciente, cedula, motivo, observaciones, estado_cita "
                    + "FROM vw_expediente_paciente "

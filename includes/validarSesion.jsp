@@ -8,6 +8,7 @@
     String rolPermitido = (String) request.getAttribute("rolPermitido");
     String rolSesion = (String) session.getAttribute("rol");
 
+    // Este control del servidor es la barrera real; ocultar enlaces en nav.jsp no autoriza recursos.
     if (session.getAttribute("id_usuario") == null) {
         response.sendRedirect("login.jsp");
         return;

@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*,java.util.*" %>
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
+<%-- Muestra datos y citas del paciente identificado por la pareja tipo/id del expediente. --%>
 <%
     request.setAttribute("rolPermitido", "ADMIN,PSICOLOGO");
 %>

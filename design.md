@@ -136,6 +136,8 @@ background:
 La paleta y el gradiente sunset se adaptaron desde `DESIGN-mistral.ai.md`.
 La implementación final se encuentra en:
 
+<!-- Estos tres archivos CSS son la fuente ejecutable; este documento explica la intención visual. -->
+
 - `css/layout.css`
 - `css/formularios.css`
 - `css/tablas.css`

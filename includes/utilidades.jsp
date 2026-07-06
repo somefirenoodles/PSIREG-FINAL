@@ -7,6 +7,7 @@
     private static final Pattern EMAIL_SIMPLE = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
 
     private static String e(String valor) {
+        // Toda salida procedente del usuario o la BD debe pasar por este escape antes de llegar al HTML.
         if (valor == null) return "";
         return valor.replace("&", "&amp;")
                     .replace("<", "&lt;")
@@ -52,6 +53,7 @@
     }
 
     private static void setTextoOpcional(PreparedStatement ps, int posicion, String valor) throws SQLException {
+        // Conserva la diferencia semántica entre un campo ausente (NULL) y una cadena con contenido.
         if (vacio(valor)) ps.setNull(posicion, Types.VARCHAR);
         else ps.setString(posicion, valor.trim());
     }
@@ -62,6 +64,7 @@
 
     private static void cargarOpciones(
             Connection cn, String sql, List<String[]> destino, String id, String texto) throws SQLException {
+        // Este helper se reserva para catálogos definidos por el servidor, no para SQL del usuario.
         try (PreparedStatement ps = cn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {

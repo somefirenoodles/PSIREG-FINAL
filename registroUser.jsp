@@ -3,6 +3,7 @@
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
 <%@ include file="includes/seguridadPassword.jsp" %>
+<%-- Registra credenciales de acceso; un psicólogo requiere además su perfil profesional. --%>
 <%
     request.setAttribute("rolPermitido", "ADMIN");
 %>

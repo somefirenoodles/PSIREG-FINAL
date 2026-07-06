@@ -1,6 +1,7 @@
 -- ============================================================
 -- PSIREG - Registro Psicologico Institucional
--- Esquema compatible con MySQL 8.x
+-- Esquema probado con MariaDB 10.4 y compatible con MySQL 8.x.
+-- ATENCION: este script reconstruye psireg_db; debe usarse solo para preparar entornos de prueba.
 -- ============================================================
 
 DROP DATABASE IF EXISTS psireg_db;
@@ -27,6 +28,7 @@ CREATE TABLE usuarios (
     fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- La cuenta controla autenticacion y rol; el perfil psicologo conserva los datos profesionales.
 CREATE TABLE cargo (
     id_cargo INT AUTO_INCREMENT PRIMARY KEY,
     nombre_cargo VARCHAR(50) NOT NULL UNIQUE
@@ -198,6 +200,7 @@ CREATE TABLE servicio (
     estado ENUM('ACTIVO', 'INACTIVO') NOT NULL DEFAULT 'ACTIVO'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- La cita usa una referencia polimorfica: exactamente una de las tres columnas de paciente debe tener valor.
 CREATE TABLE cita (
     id_cita INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATE NOT NULL,
@@ -242,7 +245,7 @@ CREATE TABLE cita (
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_unicode_ci;
 
--- Refuerzo para instalaciones MySQL que no apliquen CHECK correctamente.
+-- Refuerzo para motores o configuraciones que no apliquen CHECK correctamente.
 DELIMITER //
 CREATE TRIGGER trg_cita_un_paciente_insert
 BEFORE INSERT ON cita

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%-- Página pública y editorial; sus datos no provienen de la base de datos. --%>
 <!DOCTYPE html>
 <html lang="es">
 <head>

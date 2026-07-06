@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*,java.util.*" %>
 <%@ include file="db/conexion.jsp" %>
 <%@ include file="includes/utilidades.jsp" %>
+<%-- Consulta compartida: ADMIN elige profesional; PSICOLOGO queda limitado a su propio perfil. --%>
 <%
     request.setAttribute("rolPermitido", "ADMIN,PSICOLOGO");
 %>

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %>
+<%-- Punto único de conexión JDBC; las páginas no deben repetir credenciales ni cargar el driver. --%>
 <%!
+    // Precedencia: propiedad -D de Java, variable de entorno y, por último, valor local de desarrollo.
     private static String configuracion(
             String propiedadJava, String variableEntorno, String valorLocal) {
         String valor = System.getProperty(propiedadJava);
@@ -22,6 +24,7 @@
 
     public static Connection obtenerConexion() throws SQLException {
         try {
+            // El driver se distribuye en WEB-INF/lib y queda aislado para esta aplicación web.
             Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (ClassNotFoundException e) {

@@ -9,6 +9,7 @@
     private static final int PBKDF2_KEY_LENGTH = 256;
 
     private static String generarHashPassword(String password) throws GeneralSecurityException {
+        // Un salt nuevo por cuenta evita que contraseñas iguales produzcan valores almacenados iguales.
         byte[] salt = new byte[16];
         new SecureRandom().nextBytes(salt);
 
@@ -46,8 +47,10 @@
                 .getEncoded();
             spec.clearPassword();
 
+            // La comparación constante reduce filtraciones por diferencias de tiempo.
             return MessageDigest.isEqual(hashEsperado, hashCalculado);
         } catch (Exception ex) {
+            // Un hash antiguo, incompleto o manipulado se trata siempre como credencial inválida.
             return false;
         }
     }

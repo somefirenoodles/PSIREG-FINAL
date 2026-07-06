@@ -1,5 +1,7 @@
 # PSIREG JSP simplificado
 
+<!-- Documento histórico de la simplificación. Para ejecutar el sistema prevalece README.md. -->
+
 Este paquete contiene reemplazos para los JSP principales de `PSIREG ACTIVE`.
 
 Objetivo aplicado:

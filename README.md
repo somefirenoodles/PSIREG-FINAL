@@ -1,6 +1,8 @@
 PSIREG ACTIVE
 =============
 
+<!-- Este archivo es la referencia operativa del entorno local; no contiene configuración de producción. -->
+
 Entorno local probado:
 
 - Eclipse IDE for Enterprise Java 2026-03
