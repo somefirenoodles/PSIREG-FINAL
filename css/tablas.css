@@ -1,0 +1,37 @@
+/* Tablas institucionales y etiquetas de estado. */
+.table-wrapper { width: 100%; overflow-x: auto; border: 1px solid var(--color-hairline); border-radius: var(--radius-card); }
+.table-clean { width: 100%; min-width: 640px; border-collapse: collapse; background: var(--color-surface-soft); text-align: left; }
+.table-clean th, .table-clean td { padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--color-hairline); vertical-align: middle; }
+.table-clean th {
+    background: linear-gradient(115deg, var(--color-primary-deep), var(--color-primary) 58%, #a72e04);
+    color: var(--color-on-primary);
+    font-size: .8125rem;
+    font-weight: 600;
+}
+.table-clean td { color: var(--color-body); font-size: .875rem; }
+.table-clean tbody tr:last-child td { border-bottom: 0; }
+.table-clean tbody tr:hover { background: var(--color-surface-strong); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 4px 10px;
+    border: 1px solid var(--color-hairline-strong);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-strong);
+    color: var(--color-ink);
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+}
+.badge-pendiente { color: #6b5310; }
+.badge-atendida { color: #28543a; }
+.badge-cancelada { color: #8a2626; }
+.badge-reprogramada { color: #43516b; }
+
+@media (max-width: 768px) {
+    .table-wrapper { border-radius: 8px; }
+    .table-clean th, .table-clean td { padding: var(--space-md); }
+}
