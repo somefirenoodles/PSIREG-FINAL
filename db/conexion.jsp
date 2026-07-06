@@ -12,6 +12,7 @@
         return (valor == null || valor.trim().isEmpty()) ? valorLocal : valor;
     }
 
+    // Al ser constantes de la clase JSP, cambiar estas variables requiere recargar la aplicación.
     private static final String DB_URL = configuracion(
         "psireg.db.url",
         "PSIREG_DB_URL",

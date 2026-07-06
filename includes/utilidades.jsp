@@ -21,6 +21,7 @@
     }
 
     private static String p(javax.servlet.http.HttpServletRequest request, String nombre) {
+        // Centraliza null y trim para que las validaciones no repitan normalización de parámetros.
         String valor = request.getParameter(nombre);
         return valor == null ? "" : valor.trim();
     }
@@ -38,10 +39,12 @@
     }
 
     private static boolean correoValido(String correo) {
+        // Validación deliberadamente simple: detecta errores de forma sin intentar implementar todo RFC 5322.
         return correo != null && EMAIL_SIMPLE.matcher(correo).matches();
     }
 
     private static boolean unoDe(String valor, String... opciones) {
+        // Actúa como lista permitida para valores que también llegan desde selects manipulables.
         for (String opcion : opciones) {
             if (opcion.equals(valor)) return true;
         }
@@ -49,6 +52,7 @@
     }
 
     private static String selected(String actual, String esperado) {
+        // Conserva la selección del usuario al volver a renderizar un formulario con errores.
         return esperado.equals(actual) ? "selected" : "";
     }
 
@@ -59,6 +63,7 @@
     }
 
     private static String badge(String estado) {
+        // Traduce estados controlados de la BD a modificadores CSS; no sustituye el escape del texto visible.
         return vacio(estado) ? "badge" : "badge badge-" + estado.toLowerCase();
     }
 

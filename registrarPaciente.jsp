@@ -33,6 +33,7 @@
     List<String[]> facultades = new ArrayList<String[]>();
 
     if (esPost(request)) {
+        // Se leen todos los campos una vez; después, cada tipo consume únicamente los que le corresponden.
         tipo = p(request, "tipo");
         nombre = p(request, "nombre");
         segundoNombre = p(request, "segundoNombre");
@@ -51,6 +52,7 @@
         idCarrera = p(request, "idCarrera");
         idFacultad = p(request, "idFacultad");
 
+        // Las reglas comunes se aplican antes de las condiciones específicas de cada subtipo.
         if (!unoDe(tipo, "ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")) {
             error = "El tipo de paciente seleccionado no es válido.";
         } else if (vacio(nombre) || vacio(apellidoPaterno) || vacio(apellidoMaterno)
@@ -71,6 +73,7 @@
 
         if (error == null) {
             try (Connection cn = obtenerConexion()) {
+                // La vista permite comprobar identidad entre las tres tablas con una sola consulta.
                 String sqlDuplicado = "SELECT 1 FROM vw_lista_pacientes "
                                     + "WHERE cedula = ? OR correo_institucional = ? LIMIT 1";
                 try (PreparedStatement ps = cn.prepareStatement(sqlDuplicado)) {
@@ -88,6 +91,7 @@
                         int idGenerado;
 
                         if ("ESTUDIANTE".equals(tipo)) {
+                            // Estudiante conserva carrera; casa puede permanecer sin valor.
                             String sql = "INSERT INTO estudiante "
                                        + "(primer_nombre, segundo_nombre, apellido_paterno, apellido_materno, cedula, genero, "
                                        + "correo_institucional, casa, calle, corregimiento, id_carrera, estado) "
@@ -114,6 +118,7 @@
                             insertarTelefono(cn, "tlf_estudiante", "id_estudiante", "tipo_tlf_estudiante", idGenerado, "Personal", telefonoPersonal);
                             insertarTelefono(cn, "tlf_estudiante", "id_estudiante", "tipo_tlf_estudiante", idGenerado, "Residencial", telefonoResidencial);
                         } else if ("DOCENTE".equals(tipo)) {
+                            // Docente se relaciona con facultad y no con una carrera concreta.
                             String sql = "INSERT INTO docente "
                                        + "(primer_nombre, segundo_nombre, apellido_paterno, apellido_materno, cedula, genero, "
                                        + "correo_institucional, telefono_personal, casa, calle, corregimiento, id_facultad, estado) "
@@ -141,6 +146,7 @@
                             insertarTelefono(cn, "tlf_docente", "id_docente", "tipo_tlf_docente", idGenerado, "Personal", telefonoPersonal);
                             insertarTelefono(cn, "tlf_docente", "id_docente", "tipo_tlf_docente", idGenerado, "Residencial", telefonoResidencial);
                         } else {
+                            // Administrativo usa departamento como dato institucional específico.
                             String sql = "INSERT INTO administrativo "
                                        + "(primer_nombre, segundo_nombre, apellido_paterno, apellido_materno, cedula, genero, "
                                        + "correo_institucional, telefono_personal, casa, calle, corregimiento, departamento, estado) "
@@ -169,6 +175,7 @@
                             insertarTelefono(cn, "tlf_admin", "id_admin", "tipo_tlf_admin", idGenerado, "Residencial", telefonoResidencial);
                         }
 
+                        // Solo se confirma cuando tanto la persona como sus teléfonos quedaron registrados.
                         cn.commit();
                         exito = "Paciente institucional registrado correctamente.";
                         tipo = "ESTUDIANTE";
@@ -178,6 +185,7 @@
                         estado = "ACTIVO";
                         departamento = idCarrera = idFacultad = "";
                     } catch (Exception ex) {
+                        // El rollback evita pacientes incompletos cuando falla una FK, catálogo o teléfono.
                         cn.rollback();
                         getServletContext().log("Error al insertar paciente.", ex);
                         error = "No fue posible registrar el paciente.";
@@ -192,6 +200,7 @@
         }
     }
 
+    // Carreras y facultades se cargan siempre para que cambiar el tipo no requiera otra página.
     try (Connection cn = obtenerConexion()) {
         cargarOpciones(cn, "SELECT id_carrera, nombre_carrera FROM carrera ORDER BY nombre_carrera",
             carreras, "id_carrera", "nombre_carrera");

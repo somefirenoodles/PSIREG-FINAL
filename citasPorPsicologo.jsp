@@ -8,6 +8,7 @@
 %>
 <%@ include file="includes/validarSesion.jsp" %>
 <%
+    // El mismo endpoint adapta su alcance al rol, pero conserva una sola plantilla de resultados.
     String rol = String.valueOf(session.getAttribute("rol"));
     String error = null;
     String idPsicologoParametro = p(request, "id_psicologo");
@@ -17,6 +18,7 @@
 
     try (Connection cn = obtenerConexion()) {
         if ("PSICOLOGO".equals(rol)) {
+            // Para profesionales, el perfil se obtiene de la cuenta autenticada y no de parámetros manipulables.
             try (PreparedStatement ps = cn.prepareStatement("SELECT id_psicologo FROM psicologo WHERE id_usuario = ? AND estado = 'ACTIVO'")) {
                 ps.setInt(1, ((Number) session.getAttribute("id_usuario")).intValue());
                 try (ResultSet rs = ps.executeQuery()) {
@@ -25,6 +27,7 @@
                 }
             }
         } else {
+            // Solo ADMIN llega a esta rama y puede escoger entre perfiles activos.
             idPsicologoConsulta = vacio(idPsicologoParametro) ? null : Integer.valueOf(idPsicologoParametro);
             cargarOpciones(cn,
                 "SELECT id_psicologo, nombre_completo FROM vw_lista_psicologos WHERE estado = 'ACTIVO' ORDER BY nombre_completo",
@@ -32,6 +35,7 @@
         }
 
         if (error == null) {
+            // La vista ya unifica paciente y servicio para evitar lógica por subtipo en esta página.
             String sql = "SELECT id_cita, fecha, hora, nombre_servicio, id_psicologo, psicologo, "
                        + "id_paciente, tipo_paciente, nombre_completo AS paciente, cedula, motivo, observaciones, estado_cita "
                        + "FROM vw_expediente_paciente "
@@ -92,6 +96,7 @@
                 <p>El psicólogo solo ve las citas de su perfil profesional vinculado.</p>
             </header>
 
+            <%-- El selector se oculta al psicólogo porque su alcance ya fue fijado en el servidor. --%>
             <% if ("ADMIN".equals(rol)) { %>
                 <form class="card" method="get" action="citasPorPsicologo.jsp">
                     <div class="form-group">

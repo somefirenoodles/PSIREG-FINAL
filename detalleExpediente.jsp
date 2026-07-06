@@ -8,6 +8,7 @@
 %>
 <%@ include file="includes/validarSesion.jsp" %>
 <%
+    // tipo_paciente e id_paciente forman una clave lógica: cada subtipo mantiene su propia secuencia.
     String error = null;
     String tipoPaciente = p(request, "tipo_paciente");
     String idPacienteTexto = p(request, "id_paciente");
@@ -18,6 +19,7 @@
     List<Map<String, String>> citas = new ArrayList<Map<String, String>>();
 
     try {
+        // Se rechazan identificadores y tipos desconocidos antes de abrir la consulta principal.
         idPaciente = Integer.valueOf(idPacienteTexto);
         if (!unoDe(tipoPaciente, "ESTUDIANTE", "DOCENTE", "ADMINISTRATIVO")) {
             throw new IllegalArgumentException();
@@ -28,6 +30,7 @@
 
     try (Connection cn = obtenerConexion()) {
         if (error == null && "PSICOLOGO".equals(rol)) {
+            // ADMIN consulta globalmente; PSICOLOGO debe demostrar relación mediante una cita.
             try (PreparedStatement ps = cn.prepareStatement("SELECT id_psicologo FROM psicologo WHERE id_usuario = ? AND estado = 'ACTIVO'")) {
                 ps.setInt(1, ((Number) session.getAttribute("id_usuario")).intValue());
                 try (ResultSet rs = ps.executeQuery()) {
@@ -51,6 +54,7 @@
         }
 
         if (error == null) {
+            // La vista normaliza las columnas comunes de estudiante, docente y administrativo.
             String sqlPaciente = "SELECT nombre_completo, cedula, correo_institucional, estado "
                                + "FROM vw_lista_pacientes WHERE id_paciente = ? AND tipo_paciente = ?";
             try (PreparedStatement ps = cn.prepareStatement(sqlPaciente)) {
@@ -71,6 +75,7 @@
         }
 
         if (error == null && paciente != null) {
+            // El filtro adicional conserva historial global para ADMIN e historial propio para PSICOLOGO.
             String sqlCitas = "SELECT id_cita, fecha, hora, nombre_servicio, psicologo, motivo, observaciones, estado_cita "
                             + "FROM vw_expediente_paciente "
                             + "WHERE id_paciente = ? AND tipo_paciente = ? ";

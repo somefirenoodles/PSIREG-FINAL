@@ -32,6 +32,7 @@
         idCargo = p(request, "idCargo");
         estado = p(request, "estado");
 
+        // Primero se validan reglas baratas para no abrir conexiones ante entradas incompletas.
         if (vacio(primerNombre) || vacio(apellidoPaterno) || vacio(apellidoMaterno)
                 || vacio(cedula) || vacio(correo) || vacio(telefono)
                 || vacio(calle) || vacio(corregimiento) || vacio(idCargo)) {
@@ -45,6 +46,7 @@
                 Integer usuarioAsociado = vacio(idUsuario) ? null : Integer.valueOf(idUsuario);
                 int cargo = Integer.parseInt(idCargo);
 
+                // Cédula y correo representan identidad profesional y deben ser únicos.
                 String sqlDuplicado = "SELECT 1 FROM psicologo WHERE cedula = ? OR correo_institucional = ? LIMIT 1";
                 try (PreparedStatement ps = cn.prepareStatement(sqlDuplicado)) {
                     ps.setString(1, cedula);
@@ -55,6 +57,7 @@
                 }
 
                 if (error == null && usuarioAsociado != null) {
+                    // Solo se enlazan cuentas activas de psicólogo que aún no tengan perfil.
                     String sqlUsuario = "SELECT 1 FROM usuarios u "
                                       + "LEFT JOIN psicologo p ON p.id_usuario = u.id_usuario "
                                       + "WHERE u.id_usuario = ? AND u.rol = 'PSICOLOGO' "
@@ -73,6 +76,7 @@
                                + "cedula, genero, correo_institucional, telefono, casa, calle, corregimiento, id_cargo, estado) "
                                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement ps = cn.prepareStatement(sql)) {
+                        // Atención: el formulario admite vacío, pero el esquema actual declara id_usuario NOT NULL.
                         if (usuarioAsociado == null) ps.setNull(1, Types.INTEGER);
                         else ps.setInt(1, usuarioAsociado.intValue());
                         ps.setString(2, primerNombre);
@@ -91,6 +95,7 @@
                         ps.executeUpdate();
                     }
 
+                    // Restablecer valores evita que un segundo alta herede datos del perfil anterior.
                     exito = "Psicólogo registrado correctamente.";
                     idUsuario = primerNombre = segundoNombre = apellidoPaterno = apellidoMaterno = "";
                     cedula = correo = telefono = casa = calle = corregimiento = idCargo = "";
@@ -105,6 +110,7 @@
     }
 
     try (Connection cn = obtenerConexion()) {
+        // El LEFT JOIN excluye cuentas ya vinculadas y previene asociaciones dobles desde la interfaz.
         cargarOpciones(cn,
             "SELECT u.id_usuario, CONCAT(u.nombre, ' ', u.apellido, ' (', u.usuario, ')') AS nombre_usuario "
           + "FROM usuarios u LEFT JOIN psicologo p ON p.id_usuario = u.id_usuario "

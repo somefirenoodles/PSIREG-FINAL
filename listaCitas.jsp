@@ -8,6 +8,7 @@
 %>
 <%@ include file="includes/validarSesion.jsp" %>
 <%
+    // Los valores se conservan para repoblar el formulario después de ejecutar la búsqueda.
     String error = null;
     String estado = p(request, "estado");
     String fecha = p(request, "fecha");
@@ -26,6 +27,7 @@
                    + "ORDER BY fecha DESC, hora DESC, id_cita DESC";
 
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            // Cada filtro ocupa dos parámetros: uno detecta ausencia y el otro compara el valor real.
             if (vacio(estado)) { ps.setNull(1, Types.VARCHAR); ps.setNull(2, Types.VARCHAR); }
             else { ps.setString(1, estado); ps.setString(2, estado); }
 
@@ -64,6 +66,7 @@
             }
         }
 
+        // El catálogo se carga aunque no haya resultados para permitir corregir la búsqueda.
         cargarOpciones(cn,
             "SELECT id_psicologo, nombre_completo FROM vw_lista_psicologos WHERE estado = 'ACTIVO' ORDER BY nombre_completo",
             psicologos, "id_psicologo", "nombre_completo");
@@ -93,6 +96,7 @@
                 <p>Consulta administrativa de atenciones registradas.</p>
             </header>
 
+            <%-- GET deja la combinación de filtros visible, reproducible y recargable. --%>
             <form class="card" method="get" action="listaCitas.jsp">
                 <div class="form-group">
                     <label for="estado">Estado</label>

@@ -23,6 +23,7 @@
         }
 
         if (error == null) {
+            // EXISTS evita duplicar pacientes que tengan varias citas con el mismo profesional.
             String sql = "SELECT id_paciente, tipo_paciente, paciente, cedula, correo_institucional, "
                        + "ultima_fecha_cita, ultimo_psicologo, estado_ultima_cita, total_citas "
                        + "FROM vw_expedientes "
@@ -35,6 +36,7 @@
                        + "ORDER BY paciente";
 
             try (PreparedStatement ps = cn.prepareStatement(sql)) {
+                // El parámetro de alcance procede del perfil resuelto desde la sesión.
                 ps.setInt(1, idPsicologo.intValue());
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -82,6 +84,7 @@
             <% if (error != null) { %>
                 <p class="message-error"><%= e(error) %></p>
             <% } else { %>
+                <%-- El enlace conserva tipo e id porque el número no es global entre subtipos. --%>
                 <div class="table-wrapper">
                     <table class="table-clean">
                         <thead>

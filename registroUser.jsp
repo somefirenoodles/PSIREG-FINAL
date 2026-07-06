@@ -14,6 +14,7 @@
     String rol = "PSICOLOGO", estado = "ACTIVO";
 
     if (esPost(request)) {
+        // Se conserva el texto del formulario, excepto las contraseñas, para corregir errores sin reescribir todo.
         nombre = p(request, "nombre");
         apellido = p(request, "apellido");
         usuario = p(request, "usuario");
@@ -23,6 +24,7 @@
         String password = request.getParameter("password");
         String confirmar = request.getParameter("confirmarPassword");
 
+        // El rol se valida contra una lista cerrada; no se confía en el valor del select.
         if (vacio(nombre) || vacio(apellido) || vacio(usuario) || vacio(correo) || vacio(password)) {
             error = "Complete todos los campos obligatorios.";
         } else if (!correoValido(correo)) {
@@ -32,6 +34,7 @@
         } else if (!unoDe(rol, "ADMIN", "PSICOLOGO") || !unoDe(estado, "ACTIVO", "INACTIVO")) {
             error = "Rol o estado no válido.";
         } else {
+            // La consulta anticipa las restricciones UNIQUE para devolver un mensaje entendible.
             String sqlExiste = "SELECT 1 FROM usuarios WHERE usuario = ? OR correo = ? LIMIT 1";
             String sqlInsertar = "INSERT INTO usuarios "
                                + "(nombre, apellido, usuario, correo, password_hash, rol, estado) "
@@ -54,11 +57,13 @@
                         ps.setString(2, apellido);
                         ps.setString(3, usuario);
                         ps.setString(4, correo);
+                        // Solo el hash PBKDF2 llega a la base; confirmarPassword nunca se persiste.
                         ps.setString(5, generarHashPassword(password));
                         ps.setString(6, rol);
                         ps.setString(7, estado);
                         ps.executeUpdate();
 
+                        // El perfil profesional, si aplica, se crea desde registrarPsicologo.jsp.
                         exito = "Usuario registrado correctamente.";
                         nombre = apellido = usuario = correo = "";
                         rol = "PSICOLOGO";

@@ -8,6 +8,7 @@
     String mensajeError = null;
     String credencial = p(request, "credencial");
 
+    // Una sesión vigente no vuelve a solicitar credenciales salvo que provenga de un acceso denegado.
     if (session.getAttribute("id_usuario") != null && !"acceso".equals(request.getParameter("error"))) {
         response.sendRedirect("ADMIN".equals(session.getAttribute("rol")) ? "listaCitas.jsp" : "registrarPaciente.jsp");
         return;
@@ -23,6 +24,7 @@
         if (vacio(credencial) || vacio(password)) {
             mensajeError = "Ingrese su usuario o correo y contraseña.";
         } else {
+            // El mensaje final no distingue usuario inexistente, contraseña incorrecta o cuenta inactiva.
             String sql = "SELECT id_usuario, nombre, apellido, usuario, rol, password_hash "
                        + "FROM usuarios "
                        + "WHERE (usuario = ? OR correo = ?) AND estado = 'ACTIVO' LIMIT 1";
@@ -44,6 +46,7 @@
                         nuevaSesion.setAttribute("usuario", rs.getString("usuario"));
                         nuevaSesion.setAttribute("rol", rs.getString("rol"));
 
+                        // Cada rol aterriza en su flujo de trabajo principal.
                         response.sendRedirect("ADMIN".equals(rs.getString("rol")) ? "listaCitas.jsp" : "registrarPaciente.jsp");
                         return;
                     }

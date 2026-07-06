@@ -22,6 +22,7 @@
     List<String[]> pacientes = new ArrayList<String[]>();
     List<String[]> servicios = new ArrayList<String[]>();
 
+    // La cita siempre pertenece al perfil derivado de la sesión, nunca a un id enviado por el formulario.
     try (Connection cn = obtenerConexion();
          PreparedStatement ps = cn.prepareStatement("SELECT id_psicologo FROM psicologo WHERE id_usuario = ? AND estado = 'ACTIVO'")) {
         ps.setInt(1, ((Number) session.getAttribute("id_usuario")).intValue());
@@ -43,6 +44,7 @@
         observaciones = p(request, "observaciones");
 
         try (Connection cn = obtenerConexion()) {
+            // El selector codifica TIPO|ID porque los tres tipos de paciente pueden compartir números.
             String[] partes = pacienteSeleccionado.split("\\|", -1);
             String tipoPaciente = partes[0];
             int idPaciente = Integer.parseInt(partes[1]);
@@ -54,6 +56,7 @@
                 throw new IllegalArgumentException();
             }
 
+            // Esta comprobación ofrece un mensaje claro; la restricción UNIQUE sigue siendo la garantía final.
             String sqlDuplicado = "SELECT 1 FROM cita WHERE id_psicologo = ? AND fecha = ? AND hora = ? LIMIT 1";
             try (PreparedStatement ps = cn.prepareStatement(sqlDuplicado)) {
                 ps.setInt(1, idPsicologo.intValue());
@@ -74,6 +77,7 @@
                     ps.setTime(2, horaSQL);
                     ps.setInt(3, servicio);
 
+                    // La cita es polimórfica: se limpia todo y se asigna exactamente una FK de paciente.
                     ps.setNull(4, Types.INTEGER);
                     ps.setNull(5, Types.INTEGER);
                     ps.setNull(6, Types.INTEGER);
@@ -88,6 +92,7 @@
                     ps.executeUpdate();
                 }
 
+                // Vaciar el formulario evita reenvíos accidentales con los mismos datos visibles.
                 exito = "Cita registrada correctamente.";
                 pacienteSeleccionado = idServicio = fecha = hora = motivo = observaciones = "";
             }
@@ -98,6 +103,7 @@
     }
 
     if (errorPerfil == null) {
+        // Los catálogos se cargan después del POST para reutilizar la misma vista en éxito o error.
         try (Connection cn = obtenerConexion()) {
             String sqlPacientes = "SELECT tipo_paciente, id_paciente, nombre_completo, cedula "
                                 + "FROM vw_lista_pacientes WHERE estado = 'ACTIVO' ORDER BY nombre_completo";
