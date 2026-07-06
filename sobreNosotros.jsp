@@ -25,61 +25,21 @@
             <div class="team-grid" aria-label="Integrantes del equipo">
                 <article class="card member-card">
                     <img class="member-photo" src="img/integrante1.jpg" alt="Fotografía del integrante 1">
-                    <h2>Integrante 1</h2>
+                    <h2>Gabriel González</h2>
                     <dl>
-                        <dt>Cédula</dt><dd>Completar cédula</dd>
-                        <dt>Carrera</dt><dd>Completar carrera</dd>
-                        <dt>Experiencia</dt><dd>Completar el resumen de experiencia como desarrollador.</dd>
+                        <dt>Cédula</dt><dd>8-1023-761</dd>
+                        <dt>Carrera</dt><dd>Licenciatura en Ing. de Software</dd>
+                        <dt>Experiencia</dt><dd>Experiencia en artes visuales y creative coding con (Touchdesigner, Photoshop y After Effects), he trabajado en proyectos de Análisis de Datos usando NumPy, Excel y Pandas para crear modelos de predicción o NLP en campos como sociología, entretenimiento y logística.</dd>
                     </dl>
                 </article>
 
                 <article class="card member-card">
-                    <img class="member-photo" src="img/integrante2.jpg" alt="Fotografía del integrante 2">
-                    <h2>Integrante 2</h2>
+                    <img class="member-photo" src="img/integrante2.jpeg" alt="Fotografía del integrante 2">
+                    <h2>Jenifer Albornoz</h2>
                     <dl>
-                        <dt>Cédula</dt><dd>Completar cédula</dd>
-                        <dt>Carrera</dt><dd>Completar carrera</dd>
-                        <dt>Experiencia</dt><dd>Completar el resumen de experiencia como desarrollador.</dd>
-                    </dl>
-                </article>
-
-                <article class="card member-card">
-                    <img class="member-photo" src="img/integrante3.jpg" alt="Fotografía del integrante 3">
-                    <h2>Integrante 3</h2>
-                    <dl>
-                        <dt>Cédula</dt><dd>Completar cédula</dd>
-                        <dt>Carrera</dt><dd>Completar carrera</dd>
-                        <dt>Experiencia</dt><dd>Completar el resumen de experiencia como desarrollador.</dd>
-                    </dl>
-                </article>
-
-                <article class="card member-card">
-                    <img class="member-photo" src="img/integrante4.jpg" alt="Fotografía del integrante 4">
-                    <h2>Integrante 4</h2>
-                    <dl>
-                        <dt>Cédula</dt><dd>Completar cédula</dd>
-                        <dt>Carrera</dt><dd>Completar carrera</dd>
-                        <dt>Experiencia</dt><dd>Completar el resumen de experiencia como desarrollador.</dd>
-                    </dl>
-                </article>
-
-                <article class="card member-card">
-                    <img class="member-photo" src="img/integrante5.jpg" alt="Fotografía del integrante 5">
-                    <h2>Integrante 5</h2>
-                    <dl>
-                        <dt>Cédula</dt><dd>Completar cédula</dd>
-                        <dt>Carrera</dt><dd>Completar carrera</dd>
-                        <dt>Experiencia</dt><dd>Completar el resumen de experiencia como desarrollador.</dd>
-                    </dl>
-                </article>
-
-                <article class="card member-card">
-                    <img class="member-photo" src="img/integrante6.jpg" alt="Fotografía del integrante 6">
-                    <h2>Integrante 6</h2>
-                    <dl>
-                        <dt>Cédula</dt><dd>Completar cédula</dd>
-                        <dt>Carrera</dt><dd>Completar carrera</dd>
-                        <dt>Experiencia</dt><dd>Completar el resumen de experiencia como desarrollador.</dd>
+                        <dt>Cédula</dt><dd>E-8-220963</dd>
+                        <dt>Carrera</dt><dd>Licenciatura en Ing. de Software</dd>
+                        <dt>Experiencia</dt><dd>Experiencia en desarrollo de software y diseño web, con conocimientos en Java, JSP, HTML, CSS y bases de datos SQL.</dd>
                     </dl>
                 </article>
             </div>
